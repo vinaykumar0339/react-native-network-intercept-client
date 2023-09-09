@@ -57,7 +57,8 @@
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
-    "@types/react-native": "0.70.0",
+    "@types/react-native": "^0.70.14",
+    "@types/rn-host-detect": "^1.2.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
@@ -155,5 +156,10 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "merge": "^2.1.1",
+    "query-string": "^8.1.0",
+    "rn-host-detect": "^1.2.0"
   }
 }
