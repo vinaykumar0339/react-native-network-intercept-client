@@ -6,7 +6,12 @@ import queryString from 'query-string';
 type ResponseType = '' | 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
 type Response = string | Object | null;
 
-export default (apiResponse: any) => {
+export interface ApiResponse {
+  request: Object;
+  response: Object;
+}
+
+export default (apiResponse: (response: ApiResponse) => void) => {
   function onResponse(
     status: number,
     _: number,
@@ -23,7 +28,7 @@ export default (apiResponse: any) => {
     }
 
     // assemble the request object
-    const tronRequest = {
+    const request = {
       responseURL: responseURL,
       method: xhr._method || null,
       headers: xhr._headers || null,
@@ -37,16 +42,16 @@ export default (apiResponse: any) => {
           // all i am saying, is give JSON a chance...
           body = JSON.parse(responseBodyText);
         } catch (error) {
-          body = response;
+          body = responseBodyText;
         }
       }
-      const tronResponse = {
+      const serverResponse = {
         body,
         status,
         headers: xhr.responseHeaders || null,
       };
 
-      apiResponse?.({ tronRequest, tronResponse });
+      apiResponse?.({ request, response: serverResponse });
     };
 
     // can we use the real response?
@@ -68,7 +73,7 @@ export default (apiResponse: any) => {
           bReader.removeEventListener('loadend', brListener);
         };
         bReader.addEventListener('loadend', brListener);
-        bReader.readAsText(response as Blob);
+        bReader.readAsText(response);
       } else {
         sendResponse(response);
       }

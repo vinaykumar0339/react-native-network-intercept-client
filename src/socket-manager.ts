@@ -14,9 +14,9 @@ export default class SocketManager {
     this.webSocket = new WebSocket(path);
   }
 
-  send(payload: any) {
+  send(payload: string | ArrayBuffer | ArrayBufferView | Blob) {
     if (this.webSocket.readyState === SOCKET_OPEN_STATE) {
-      this.send(payload);
+      this.webSocket.send(payload);
     }
   }
 

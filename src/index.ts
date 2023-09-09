@@ -1,7 +1,7 @@
 import { DEFAULTS, type ClientOptions, CreateClient } from './client';
-import Networking from './plugins/Networking';
+import Networking, { type ApiResponse } from './plugins/Networking';
 
-export class ReactNativeNetworkInterceptor {
+class ReactNativeNetworkInterceptor {
   private options: ClientOptions = DEFAULTS;
   private client?: CreateClient;
 
@@ -22,12 +22,17 @@ export class ReactNativeNetworkInterceptor {
     this.client.onMessage(onMessage);
   }
 
-  onApiResponse(response: any) {
-    this.client?.send(response);
-  }
+  onApiResponse = (response: ApiResponse) => {
+    this.client?.send(JSON.stringify(response));
+  };
 
   useReactNativeNetwork(): ReactNativeNetworkInterceptor {
     Networking(this.onApiResponse);
     return this;
   }
 }
+
+const ReactNativeNetworkInterceptorInstance =
+  new ReactNativeNetworkInterceptor().useReactNativeNetwork();
+
+export default ReactNativeNetworkInterceptorInstance;

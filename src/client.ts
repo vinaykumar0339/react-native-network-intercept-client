@@ -22,7 +22,7 @@ export class CreateClient {
     this.socket = new SocketManager(`ws://${host}:${port}`);
   }
 
-  send(data: any) {
+  send(data: string | ArrayBuffer | ArrayBufferView | Blob) {
     this.socket.send(data);
   }
 
